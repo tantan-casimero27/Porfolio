@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>Claude</title>
+  <circle cx="32" cy="32" r="29" fill="#f0ebf4"/>
+  <g fill="none" stroke="#d98252" stroke-linecap="round">
+    <path d="M32 12v10m0 20v10M12 32h10m20 0h10M17.9 17.9 25 25m14 14 7.1 7.1m0-28.2L39 25m-14 14-7.1 7.1" stroke-width="3"/>
+    <path d="m24.4 13.8 2.6 8.1m10 20.2 2.6 8.1m-25.8-18.5 8.2 2.6m20 6.4 8.2 2.6m-32.6-17.4 7.4 4.3m17.2 9.9 7.4 4.3m-30.4-9.5 8.1-2.6m20.2-6.4 8.1-2.6m-23 30.6 2.6-8.1m6.4-20.2 2.6-8.1" stroke-width="2.2"/>
+  </g>
+</svg>

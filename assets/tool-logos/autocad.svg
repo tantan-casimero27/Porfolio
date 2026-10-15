@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>AutoCAD</title>
+  <defs>
+    <linearGradient id="autocad-front" x1="14" x2="48" y1="13" y2="55" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ec3434"/>
+      <stop offset="1" stop-color="#a30d1e"/>
+    </linearGradient>
+    <linearGradient id="autocad-side" x1="39" x2="58" y1="30" y2="53" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#a91522"/>
+      <stop offset="1" stop-color="#65101a"/>
+    </linearGradient>
+  </defs>
+  <path d="M10 53 26 10h11L58 53H45L32 25 22 53H10Z" fill="url(#autocad-front)"/>
+  <path d="m37 10 21 43H45L32 25l5-15Z" fill="url(#autocad-side)" opacity=".88"/>
+  <path d="m21 40 22-7 4 9-29 9 3-11Z" fill="#7c111b" opacity=".92"/>
+</svg>

@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" fill="none">
+  <defs>
+    <radialGradient id="cosmos" cx="0" cy="0" r="1" gradientTransform="matrix(650 210 -230 710 1280 365)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#087c9b" stop-opacity=".28"/>
+      <stop offset=".55" stop-color="#123355" stop-opacity=".15"/>
+      <stop offset="1" stop-color="#080b12" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="collision" cx="0" cy="0" r="1" gradientTransform="matrix(210 0 0 220 1005 438)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffd166" stop-opacity=".42"/>
+      <stop offset=".33" stop-color="#ff8b3d" stop-opacity=".2"/>
+      <stop offset="1" stop-color="#ff6b2c" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="dragon" x1="840" x2="1290" y1="190" y2="690" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffb347" stop-opacity=".7"/>
+      <stop offset=".46" stop-color="#ffd166" stop-opacity=".48"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity=".76"/>
+    </linearGradient>
+    <linearGradient id="trace" x1="749" x2="1418" y1="456" y2="458" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ff6b2c" stop-opacity="0"/>
+      <stop offset=".4" stop-color="#ffb347" stop-opacity=".76"/>
+      <stop offset=".75" stop-color="#22d3ee" stop-opacity=".82"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="soft-glow" width="1.6" height="1.6" x="-.3" y="-.3" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="19"/>
+    </filter>
+  </defs>
+  <path fill="url(#cosmos)" d="M0 0h1600v900H0z"/>
+  <ellipse cx="1005" cy="438" fill="url(#collision)" rx="220" ry="225"/>
+  <g opacity=".3" stroke="#ff8b48">
+    <path d="M0 700c183-107 334-122 468-44s231 92 365 14" stroke-width="1.2"/>
+    <path d="M0 755c191-107 333-114 474-48s226 73 361-8" stroke-width=".8"/>
+    <path d="M0 811c155-73 318-94 460-30s238 83 359-2" stroke-width=".7"/>
+    <path d="M110 0v184m33-184v126m-66-126v91m244-91v144" opacity=".42"/>
+  </g>
+  <g opacity=".38" stroke="#2bd0e7">
+    <path d="M1132 134c102-50 214-35 294 26s108 156 75 251" stroke-width="1.2"/>
+    <path d="M1206 760c154-70 244-184 267-341" stroke-width="1"/>
+    <path d="M1260 818c162-105 269-255 310-450" stroke-width=".7"/>
+    <path d="M1418 0v152m54-152v109m80-109v191" opacity=".55"/>
+  </g>
+  <g opacity=".5" stroke="url(#dragon)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M1008 230c-58-58-139-48-179 7-38 52-23 120 24 154 47 34 117 18 141-29 24-47-1-104-44-111-44-7-75 33-58 67 13 27 51 28 64 5" stroke-width="2.3"/>
+    <path d="M1002 238c43-78 132-95 195-55l-32 15 54 21-21-39c57 26 94 76 90 122-4 45-36 72-74 67-38-5-57-39-42-66 13-22 46-23 58-3" stroke-width="2.5"/>
+    <path d="M1025 340c-46 24-68 70-43 109 22 36 73 43 111 18 37-25 46-75 18-104-28-30-76-23-92 10-14 29 7 61 34 59 17-1 28-16 23-30" stroke-width="2"/>
+    <path d="M1118 343c55-29 124-8 145 45 22 54-4 121-58 139-50 17-105-11-116-61-10-43 18-84 57-83 38 1 60 38 43 67-14 23-48 25-62 5" stroke-width="2.2"/>
+    <path d="M1019 235l-52-52 71 19m159-20 76-33-38 67m-86 211 27 71 30-60m-213-78-70 23 43 33" stroke-width="1.5"/>
+    <path d="M997 258l-77-35m114 108 99-43m-80 145 113-45m16-161 91 37m-63 106 87 8" stroke-width="1" opacity=".62"/>
+  </g>
+  <g fill="#9ef6f1">
+    <circle cx="920" cy="223" r="3"/><circle cx="1034" cy="331" r="3.5"/><circle cx="1125" cy="288" r="2.5"/>
+    <circle cx="1130" cy="433" r="3"/><circle cx="1243" cy="343" r="3"/><circle cx="1090" cy="512" r="2.5"/>
+    <circle cx="978" cy="390" r="2.5"/><circle cx="1217" cy="472" r="3"/>
+  </g>
+  <g fill="#ffd166" opacity=".85">
+    <circle cx="1000" cy="279" r="2"/><circle cx="1085" cy="363" r="2.5"/><circle cx="1055" cy="467" r="2"/>
+    <circle cx="1173" cy="229" r="1.7"/><circle cx="944" cy="442" r="1.7"/>
+  </g>
+  <g fill="#d4deed" font-family="monospace" font-size="12" opacity=".34">
+    <text x="82" y="294">const signal = 0x22D3EE;</text>
+    <text x="202" y="337">GPIO · 3.3V · C++</text>
+    <text x="1310" y="586">0xFF6B2C</text>
+    <text x="1387" y="621">10110110</text>
+    <text x="832" y="604">#FFD166</text>
+    <text x="1278" y="246">01001011</text>
+  </g>
+  <path d="M667 490c193-106 320-98 442-30 104 58 202 58 342-17" stroke="url(#trace)" stroke-width="1.5" opacity=".52"/>
+  <path d="M653 502c189-92 313-84 437-17 120 64 224 46 343-15" stroke="url(#trace)" stroke-width=".8" opacity=".4"/>
+  <g fill="#d9fbff" opacity=".68">
+    <circle cx="772" cy="441" r="1.5"/><circle cx="816" cy="474" r="1"/><circle cx="864" cy="414" r="1.2"/>
+    <circle cx="1170" cy="527" r="1.4"/><circle cx="1284" cy="411" r="1"/><circle cx="1336" cy="463" r="1.5"/>
+    <circle cx="1410" cy="373" r="1"/><circle cx="745" cy="541" r="1.1"/><circle cx="1500" cy="710" r="1.4"/>
+  </g>
+</svg>
