@@ -74,6 +74,12 @@ const portfolio = {
       description: "Designing basic posters, social media graphics, presentations, and visual materials using Canva.",
       icon: "C",
       accent: "#14b8a6"
+    },
+    {
+      title: "Basic AutoCAD",
+      description: "Create basic 2D technical drawings, simple layouts, and dimensioned plans using AutoCAD.",
+      logo: "./assets/tool-logos/autocad.svg",
+      accent: "#f44747"
     }
   ],
   projects: [
@@ -179,8 +185,14 @@ servicesGrid.innerHTML = portfolio.services
   .map(
     (service) => `
       <article class="service-card reveal" style="--service-accent:${escapeHTML(service.accent)}">
-        <span class="service-icon" aria-hidden="true">${escapeHTML(service.icon)}</span>
-        <h4>${escapeHTML(service.title)}</h4>
+        <h4>
+          <span class="service-icon" aria-hidden="true">${
+            service.logo
+              ? `<img src="${escapeHTML(service.logo)}" alt="">`
+              : escapeHTML(service.icon)
+          }</span>
+          ${escapeHTML(service.title)}
+        </h4>
         <p>${escapeHTML(service.description)}</p>
       </article>
     `
@@ -334,6 +346,93 @@ if ("IntersectionObserver" in window) {
     { rootMargin: "-32% 0px -58% 0px" }
   );
   sections.forEach((section) => sectionObserver.observe(section));
+}
+
+// Gently shift the hero's decorative line layers toward the pointer.
+const heroArt = document.querySelector(".hero-art");
+const heroLineMotionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+const finePointerPreference = window.matchMedia("(hover: hover) and (pointer: fine)");
+
+if (heroArt && finePointerPreference.matches) {
+  const lineLayers = [
+    { element: heroArt.querySelector(".orbit-one"), depth: 1 },
+    { element: heroArt.querySelector(".orbit-two"), depth: -0.72 },
+    { element: heroArt.querySelector(".sigil-ring"), depth: 0.42 }
+  ].filter((layer) => layer.element);
+  let targetX = 0;
+  let targetY = 0;
+  let currentX = 0;
+  let currentY = 0;
+  let parallaxFrame = 0;
+
+  const clearLineParallax = () => {
+    lineLayers.forEach(({ element }) => {
+      element.style.removeProperty("--line-shift-x");
+      element.style.removeProperty("--line-shift-y");
+    });
+    targetX = 0;
+    targetY = 0;
+  };
+
+  const updateLineParallax = () => {
+    parallaxFrame = 0;
+    if (heroLineMotionPreference.matches) {
+      currentX = 0;
+      currentY = 0;
+      clearLineParallax();
+      return;
+    }
+
+    currentX += (targetX - currentX) * 0.08;
+    currentY += (targetY - currentY) * 0.08;
+    lineLayers.forEach(({ element, depth }) => {
+      element.style.setProperty("--line-shift-x", `${(currentX * depth).toFixed(2)}px`);
+      element.style.setProperty("--line-shift-y", `${(currentY * depth).toFixed(2)}px`);
+    });
+
+    if (Math.abs(targetX - currentX) > 0.03 || Math.abs(targetY - currentY) > 0.03) {
+      parallaxFrame = window.requestAnimationFrame(updateLineParallax);
+    } else {
+      currentX = targetX;
+      currentY = targetY;
+    }
+  };
+
+  const handleHeroPointerMove = (event) => {
+    if (heroLineMotionPreference.matches || event.pointerType === "touch") return;
+    const bounds = heroArt.getBoundingClientRect();
+    targetX = ((event.clientX - bounds.left) / bounds.width - 0.5) * 12;
+    targetY = ((event.clientY - bounds.top) / bounds.height - 0.5) * 10;
+    if (!parallaxFrame) parallaxFrame = window.requestAnimationFrame(updateLineParallax);
+  };
+
+  const handleHeroPointerLeave = () => {
+    targetX = 0;
+    targetY = 0;
+    if (!parallaxFrame) parallaxFrame = window.requestAnimationFrame(updateLineParallax);
+  };
+
+  const handleHeroMotionChange = () => {
+    if (!heroLineMotionPreference.matches) return;
+    if (parallaxFrame) window.cancelAnimationFrame(parallaxFrame);
+    parallaxFrame = 0;
+    currentX = 0;
+    currentY = 0;
+    clearLineParallax();
+  };
+
+  const handleHeroPageHide = () => {
+    if (parallaxFrame) window.cancelAnimationFrame(parallaxFrame);
+    heroArt.removeEventListener("pointermove", handleHeroPointerMove);
+    heroArt.removeEventListener("pointerleave", handleHeroPointerLeave);
+    heroLineMotionPreference.removeEventListener("change", handleHeroMotionChange);
+    window.removeEventListener("pagehide", handleHeroPageHide);
+  };
+
+  heroArt.addEventListener("pointermove", handleHeroPointerMove, { passive: true });
+  heroArt.addEventListener("pointerleave", handleHeroPointerLeave, { passive: true });
+  heroLineMotionPreference.addEventListener("change", handleHeroMotionChange);
+  window.addEventListener("pagehide", handleHeroPageHide, { once: true });
 }
 
 // Hero energy field. Adjust these values to tune density and motion.
@@ -591,6 +690,7 @@ if (pageStarsCanvas && pageStarsContext && hero) {
   let documentHeight = 0;
   let heroBottom = 0;
   let animationFrame = 0;
+  let lastFrameTimestamp = 0;
   let destroyed = false;
 
   const refreshPageDimensions = () => {
@@ -617,7 +717,10 @@ if (pageStarsCanvas && pageStarsContext && hero) {
         phase: Math.random() * Math.PI * 2,
         twinkleSpeed: 0.4 + Math.random() * 1.3,
         color: starPalette[Math.floor(Math.random() * starPalette.length)],
-        glow: Math.random() < 0.12
+        driftX: (Math.random() - 0.5) * 7,
+        driftY: (Math.random() - 0.5) * 9,
+        glow: Math.random() < 0.12,
+        sparkle: Math.random() < 0.1
       });
     }
 
@@ -642,7 +745,7 @@ if (pageStarsCanvas && pageStarsContext && hero) {
       const fadeOut = Math.pow(1 - progress, 1.25);
       const twinkle = motionPreference.matches
         ? 0.72
-        : 0.52 + (Math.sin(elapsed * star.twinkleSpeed + star.phase) + 1) * 0.16;
+        : 0.3 + (Math.sin(elapsed * star.twinkleSpeed + star.phase) + 1) * 0.32;
       const opacity = fadeIn * fadeOut * twinkle;
       if (opacity < 0.025) return;
 
@@ -650,6 +753,18 @@ if (pageStarsCanvas && pageStarsContext && hero) {
       pageStarsContext.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
       pageStarsContext.fillStyle = `rgba(${star.color}, ${opacity})`;
       pageStarsContext.fill();
+
+      if (star.sparkle && twinkle > 0.82) {
+        const glintSize = star.radius * 3.5;
+        pageStarsContext.beginPath();
+        pageStarsContext.moveTo(star.x - glintSize, star.y);
+        pageStarsContext.lineTo(star.x + glintSize, star.y);
+        pageStarsContext.moveTo(star.x, star.y - glintSize);
+        pageStarsContext.lineTo(star.x, star.y + glintSize);
+        pageStarsContext.strokeStyle = `rgba(${star.color}, ${opacity * 0.42})`;
+        pageStarsContext.lineWidth = 0.7;
+        pageStarsContext.stroke();
+      }
 
       if (star.glow) {
         const glowRadius = star.radius * 5;
@@ -677,6 +792,18 @@ if (pageStarsCanvas && pageStarsContext && hero) {
   const animatePageStars = (timestamp) => {
     animationFrame = 0;
     if (destroyed || document.hidden || motionPreference.matches) return;
+    const deltaSeconds = lastFrameTimestamp
+      ? Math.min((timestamp - lastFrameTimestamp) / 1000, 0.05)
+      : 0;
+    lastFrameTimestamp = timestamp;
+    stars.forEach((star) => {
+      star.x += star.driftX * deltaSeconds;
+      star.y += star.driftY * deltaSeconds;
+      if (star.x < -4) star.x = width + 4;
+      else if (star.x > width + 4) star.x = -4;
+      if (star.y < -4) star.y = height + 4;
+      else if (star.y > height + 4) star.y = -4;
+    });
     drawPageStars(timestamp);
     if (window.scrollY + height > heroBottom) {
       animationFrame = window.requestAnimationFrame(animatePageStars);
@@ -691,6 +818,7 @@ if (pageStarsCanvas && pageStarsContext && hero) {
   const stopPageStars = () => {
     if (animationFrame) window.cancelAnimationFrame(animationFrame);
     animationFrame = 0;
+    lastFrameTimestamp = 0;
   };
 
   const handlePageScroll = () => {
