@@ -538,8 +538,10 @@ img { display: block; max-width: 100%; }
 .project-card { overflow: hidden; border: 1px solid var(--border); border-radius: 10px; background: linear-gradient(155deg, #121a29, #0c111b 80%); transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease; }
 .project-card:hover { transform: translateY(-4px); border-color: rgba(34, 211, 238, 0.35); box-shadow: 0 18px 38px rgba(0, 0, 0, 0.2); }
 .project-art { position: relative; display: grid; height: 178px; overflow: hidden; place-items: center; background: radial-gradient(ellipse at 50% 55%, var(--art-glow), transparent 63%), linear-gradient(135deg, #111d2b, #0a0e17); }
+.project-files-trigger.project-art { width: 100%; padding: 0; border: 0; color: inherit; cursor: pointer; font: inherit; }
+.project-files-trigger.project-art:hover .project-art-glyph { transform: scale(1.08); }
 .project-art::before { position: absolute; inset: 0; background-image: linear-gradient(rgba(148, 163, 184, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(148, 163, 184, 0.05) 1px, transparent 1px); background-size: 22px 22px; content: ""; }
-.project-art-glyph { position: relative; color: var(--art-accent); font: 700 40px var(--mono); text-shadow: 0 0 32px var(--art-glow); }
+.project-art-glyph { position: relative; color: var(--art-accent); font: 700 40px var(--mono); text-shadow: 0 0 32px var(--art-glow); transition: transform 180ms ease; }
 .project-art-tag { position: absolute; z-index: 1; right: 12px; bottom: 10px; left: 12px; color: #a3b0c2; font: 9px var(--mono); letter-spacing: 1.2px; }
 .project-index { position: absolute; z-index: 1; top: 11px; left: 12px; color: #8794a6; font: 10px var(--mono); }
 .project-body { padding: 21px; }
@@ -555,9 +557,26 @@ img { display: block; max-width: 100%; }
 .project-link { color: #9ebbd0; font-size: 12px; transition: color 180ms ease; }
 .project-link:hover { color: var(--cyan); }
 .project-link.is-placeholder { color: #66758a; }
+.project-link-button { display: inline-flex; min-height: 38px; align-items: center; gap: 7px; padding: 0 12px; border: 1px solid rgba(34, 211, 238, 0.35); border-radius: 5px; background: rgba(34, 211, 238, 0.07); color: #9fe8f2; font-weight: 700; }
+.project-link-button:hover { transform: translateY(-1px); border-color: var(--cyan); background: rgba(34, 211, 238, 0.12); }
 .project-details { margin-top: 12px; color: #93a1b4; font-size: 12px; line-height: 1.8; }
 .project-details summary { width: fit-content; color: var(--cyan); cursor: pointer; font-size: 12px; }
 .project-details p { margin: 8px 0 0; }
+.project-files-dialog { width: min(560px, calc(100% - 32px)); max-height: min(80vh, 680px); padding: 0; overflow: auto; border: 1px solid rgba(34, 211, 238, 0.3); border-radius: 10px; background: #0d1420; color: var(--text); box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55); }
+.project-files-dialog::backdrop { background: rgba(3, 6, 12, 0.78); backdrop-filter: blur(5px); }
+.project-files-panel { padding: clamp(20px, 5vw, 30px); }
+.project-files-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.project-files-heading .eyebrow { margin-bottom: 8px; }
+.project-files-heading h2 { margin: 0; font-size: clamp(22px, 5vw, 28px); line-height: 1.25; }
+.project-files-heading form { margin: 0; }
+.project-files-close { display: grid; width: 36px; height: 36px; place-items: center; border: 1px solid var(--border); border-radius: 5px; background: rgba(148, 163, 184, 0.07); color: var(--muted); cursor: pointer; font-size: 24px; line-height: 1; }
+.project-files-description { margin: 12px 0 18px; color: var(--muted); font-size: 13px; }
+.project-file-list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.project-file-link { display: grid; gap: 3px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 6px; background: rgba(148, 163, 184, 0.035); transition: border-color 180ms ease, background 180ms ease; }
+.project-file-link:hover { border-color: rgba(34, 211, 238, 0.45); background: rgba(34, 211, 238, 0.06); }
+.project-file-name { color: #e7f5fa; font-size: 13px; font-weight: 700; }
+.project-file-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; color: #8391a5; font: 10px var(--mono); overflow-wrap: anywhere; }
+.project-file-meta span { color: var(--cyan); }
 .tools-block { margin-top: 0; }
 .services-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
 .service-card { min-height: 154px; padding: 21px; border: 1px solid var(--border); border-radius: 10px; background: linear-gradient(145deg, rgba(17, 24, 39, 0.8), rgba(10, 15, 23, 0.74)); transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease; }

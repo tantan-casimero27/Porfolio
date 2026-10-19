@@ -95,6 +95,30 @@ const portfolio = {
       glow: "rgba(34, 211, 238, 0.2)",
       repository: "",
       demo: ""
+    },
+    {
+      title: "EdiDeliver",
+      category: "WEB DEVELOPMENT / DELIVERY MANAGEMENT SYSTEM",
+      status: "In Progress",
+      description: "EdiDeliver is a delivery management system concept designed to support customer ordering, driver operations, and administrative management through separate interfaces. The project is being developed to explore delivery workflows, dashboard design, and web application functionality.",
+      details: "The preview bundle includes separate customer, admin, driver, login, signup, and password-reset pages. Its script.js file is empty; some page behavior is defined in inline scripts.",
+      technologies: ["Customer dashboard", "Driver dashboard", "Admin dashboard"],
+      icon: "🏍️",
+      accent: "#22d3ee",
+      glow: "rgba(34, 211, 238, 0.2)",
+      repository: "",
+      demo: "./edideliver/login.html",
+      demoLabel: "View Project",
+      files: [
+        { name: "Customer booking page", path: "index.html", type: "HTML" },
+        { name: "Admin dashboard", path: "admin.html", type: "HTML" },
+        { name: "Driver dashboard", path: "driver.html", type: "HTML" },
+        { name: "Forgot password", path: "forgot_password.html", type: "HTML" },
+        { name: "Login page", path: "login.html", type: "HTML" },
+        { name: "Signup page", path: "signup.html", type: "HTML" },
+        { name: "Shared script", path: "script.js", type: "JavaScript" },
+        { name: "EdiDeliver title proposal", path: "docs/Title-ProposalEDIDELIVER.docx", type: "DOCX" }
+      ]
     }
   ],
 };
@@ -136,49 +160,102 @@ toolsGrid.innerHTML = portfolio.tools
   })
   .join("");
 
-const safeExternalLink = (url, label) => {
+const safeProjectLink = (url, label, isButton = false) => {
+  const linkClass = isButton ? "project-link project-link-button" : "project-link";
   if (!url) {
-    return `<span class="project-link is-placeholder">${label} — add link</span>`;
+    return `<span class="${linkClass} is-placeholder">${escapeHTML(label)} — add link</span>`;
   }
+
+  const isLocalPage =
+    url.startsWith("./") &&
+    url.endsWith(".html") &&
+    !url.includes("..") &&
+    !/[?#\\]/.test(url);
+  if (isLocalPage) {
+    return `<a class="${linkClass}" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(label)} ↗</a>`;
+  }
+
   try {
     const parsed = new URL(url);
     if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
-      return `<span class="project-link is-placeholder">${label} — add link</span>`;
+      return `<span class="${linkClass} is-placeholder">${escapeHTML(label)} — add link</span>`;
     }
-    return `<a class="project-link" href="${escapeHTML(parsed.href)}" target="_blank" rel="noopener noreferrer">${label} ↗</a>`;
+    return `<a class="${linkClass}" href="${escapeHTML(parsed.href)}" target="_blank" rel="noopener noreferrer">${escapeHTML(label)} ↗</a>`;
   } catch {
-    return `<span class="project-link is-placeholder">${label} — add link</span>`;
+    return `<span class="${linkClass} is-placeholder">${escapeHTML(label)} — add link</span>`;
   }
 };
 
 const projectsGrid = document.querySelector("#projects-grid");
 projectsGrid.innerHTML = portfolio.projects
-  .map(
-    (project, index) => `
+  .map((project, index) => {
+    const artTag = project.files ? "button" : "div";
+    const artAttributes = project.files
+      ? `type="button" class="project-art project-files-trigger" data-project-index="${index}" aria-label="Browse all ${escapeHTML(project.title)} files"`
+      : `class="project-art" role="img" aria-label="Decorative ${escapeHTML(project.title)} project artwork"`;
+
+    return `
       <article class="project-card reveal">
-        <div class="project-art" role="img" aria-label="Decorative ${escapeHTML(project.title)} project artwork" style="--art-accent:${escapeHTML(project.accent)};--art-glow:${escapeHTML(project.glow)}">
+        <${artTag} ${artAttributes} style="--art-accent:${escapeHTML(project.accent)};--art-glow:${escapeHTML(project.glow)}">
           <span class="project-index">${String(index + 1).padStart(2, "0")} / ${String(portfolio.projects.length).padStart(2, "0")}</span>
           <span class="project-art-glyph" aria-hidden="true">${escapeHTML(project.icon)}</span>
-          <span class="project-art-tag">N.J.C. / PROJECT FILE</span>
-        </div>
+          <span class="project-art-tag">${project.files ? "CLICK TO BROWSE PROJECT FILES" : "N.J.C. / PROJECT FILE"}</span>
+        </${artTag}>
         <div class="project-body">
-          <div class="project-meta"><span class="project-category">${escapeHTML(project.category)}</span></div>
+          <div class="project-meta">
+            <span class="project-category">${escapeHTML(project.category)}</span>
+            ${project.status && project.status !== "Replace with actual project status" ? `<span class="project-status">${escapeHTML(project.status)}</span>` : ""}
+          </div>
           <h3>${escapeHTML(project.title)}</h3>
           <p>${escapeHTML(project.description)}</p>
           <div class="project-tags">${project.technologies.map((technology) => `<span>${escapeHTML(technology)}</span>`).join("")}</div>
           <div class="project-actions">
-            ${safeExternalLink(project.repository, "GitHub repository")}
-            ${safeExternalLink(project.demo, "Live demo")}
+            ${project.repository ? safeProjectLink(project.repository, "GitHub repository") : ""}
+            ${project.demo ? safeProjectLink(project.demo, project.demoLabel || "Live demo", Boolean(project.demoLabel)) : ""}
+            ${project.files ? `<button class="project-link project-link-button project-files-trigger" type="button" data-project-index="${index}">Browse project files <span aria-hidden="true">↗</span></button>` : ""}
           </div>
-          <details class="project-details">
-            <summary>View project details</summary>
-            <p>${escapeHTML(project.status)}. ${escapeHTML(project.details)}</p>
-          </details>
         </div>
       </article>
-    `
-  )
+    `;
+  })
   .join("");
+
+const projectFilesDialog = document.querySelector("#project-files-dialog");
+const projectFileList = document.querySelector("#project-file-list");
+
+projectsGrid.addEventListener("click", (event) => {
+  const trigger = event.target.closest(".project-files-trigger");
+  if (!trigger) return;
+
+  const project = portfolio.projects[Number(trigger.dataset.projectIndex)];
+  if (!project?.files) {
+    throw new Error("The selected project does not have a file list.");
+  }
+
+  projectFileList.innerHTML = project.files
+    .map((file) => {
+      if (!/^[a-zA-Z0-9][a-zA-Z0-9_./-]*$/.test(file.path) || file.path.includes("..")) {
+        throw new Error(`The ${file.name} project file path is invalid.`);
+      }
+
+      const isDocument = file.path.endsWith(".docx");
+      return `
+        <li>
+          <a class="project-file-link" href="./edideliver/${escapeHTML(file.path)}"${isDocument ? ` download="${escapeHTML(file.path.split("/").pop())}"` : ` target="_blank" rel="noopener noreferrer"`}>
+            <span class="project-file-name">${escapeHTML(file.name)}</span>
+            <span class="project-file-meta">${escapeHTML(file.path)} <span>${escapeHTML(file.type)} ↗</span></span>
+          </a>
+        </li>
+      `;
+    })
+    .join("");
+
+  projectFilesDialog.showModal();
+});
+
+projectFilesDialog.addEventListener("click", (event) => {
+  if (event.target === projectFilesDialog) projectFilesDialog.close();
+});
 
 const servicesGrid = document.querySelector("#services-grid");
 servicesGrid.innerHTML = portfolio.services
