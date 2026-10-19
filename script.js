@@ -1,7 +1,7 @@
 /* Portfolio content and interactions. */
 
 const portfolio = {
-  email: "tasespero@gmail.com",
+  email: "tanespero@gmail.com",
   profiles: {
     github: "https://github.com/tantan-casimero27",
     linkedin: ""

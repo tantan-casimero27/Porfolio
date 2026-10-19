@@ -41,7 +41,7 @@ integrated into the existing hero instead of creating duplicate `css/` and
 - The header and introduction use Nathaniel Jones Casimero. Edit these
   directly in `index.html` if you want to change the displayed name or
   personal introduction.
-- The hero and contact links use `tasespero@gmail.com`; change
+- The hero and contact links use `tanespero@gmail.com`; change
   `portfolio.email` in `script.js` if your contact address changes.
 - The GitHub profile is set in `portfolio.profiles.github` in `script.js`;
   update `portfolio.profiles.linkedin` when you want to add your LinkedIn
